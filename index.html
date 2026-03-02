@@ -4,7 +4,37 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>은하수한복 예약상담</title>
-  <link rel="stylesheet" href="style.css?v=20260302-EUNGASU-2" />
+  <link rel="stylesheet" href="style.css?v=20260302-EUNGASU-3" />
+
+  <!-- ✅ CTA 컬러 강제 덮어쓰기 -->
+  <style>
+    :root{
+      --eungasu:#2c6f7f;
+    }
+
+    .hb-fixed-cta{
+      background:#ffffff;
+      border-top:2px solid var(--eungasu);
+    }
+
+    .hb-branchBtn{
+      background:var(--eungasu) !important;
+      color:#fff !important;
+    }
+
+    .hb-action{
+      border-top:1px solid rgba(44,111,127,0.2);
+    }
+
+    .hb-action .hb-lbl{
+      color:var(--eungasu) !important;
+      font-weight:800;
+    }
+
+    .hb-action:hover{
+      background:rgba(44,111,127,0.05);
+    }
+  </style>
 </head>
 <body>
 
@@ -32,13 +62,12 @@
 
 </main>
 
-<!-- Toast -->
-<div id="toast" role="status" aria-live="polite"></div>
+<div id="toast"></div>
 
 <!-- =========================
    ✅ Eungasu Fixed CTA
 ========================= -->
-<div class="hb-fixed-cta" id="hbFixedCta" aria-label="하단 고정 CTA">
+<div class="hb-fixed-cta" id="hbFixedCta">
 
   <div class="hb-branchBtn">
     <span class="hb-branchTxt">은하수한복 상담 바로가기</span>
@@ -81,22 +110,6 @@ const FIXED_KAKAO   = "https://open.kakao.com/o/s6RE7Udh";
 const FIXED_RESERVE = "https://m.booking.naver.com/booking/6/bizes/1027108";
 const FIXED_MORE    = "https://www.instagram.com/eunhasuhanbok/";
 
-/* =========================
-   Toast
-========================= */
-const toastEl = document.getElementById('toast');
-let toastTimer = null;
-function showToast(msg){
-  if(!toastEl){ alert(msg); return; }
-  toastEl.textContent = msg;
-  toastEl.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=>toastEl.classList.remove('show'), 2200);
-}
-
-/* =========================
-   Session + Logger
-========================= */
 function getSessionId(){
   const k="EUNGASU_SID";
   let v = localStorage.getItem(k);
@@ -134,9 +147,6 @@ function sendClickEvent(action, source){
   }).catch(()=>{});
 }
 
-/* =========================
-   CTA 이벤트
-========================= */
 document.getElementById("hbBtnCall").addEventListener("click", function(e){
   e.preventDefault();
   sendClickEvent("call","cta");
@@ -160,17 +170,7 @@ document.getElementById("hbBtnMore").addEventListener("click", function(e){
   sendClickEvent("more","cta");
   window.open(FIXED_MORE, "_blank", "noopener,noreferrer");
 });
-
-/* CTA 높이 변수 */
-function setHbCtaHeightVar(){
-  const cta = document.getElementById("hbFixedCta");
-  const h = cta ? Math.round(cta.getBoundingClientRect().height) : 0;
-  document.documentElement.style.setProperty('--ctaH', h + 'px');
-}
-window.addEventListener('resize', setHbCtaHeightVar);
-window.addEventListener('load', ()=> setTimeout(setHbCtaHeightVar, 50));
-setHbCtaHeightVar();
-
 </script>
+
 </body>
 </html>
