@@ -1,207 +1,226 @@
 <!doctype html>
 <html lang="ko">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>은하수한복 예약상담</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>은하수한복 예약상담</title>
 
-<link rel="stylesheet" href="style.css?v=20260302-EUNGASU-4" />
+  <!-- ✅ 한빔에서 쓰던 style.css 그대로 사용(CTA 디자인 포함) -->
+  <link rel="stylesheet" href="style.css?v=20260302-EUNGASU-7" />
 
-<style>
-:root{
-  --eungasu:#2c6f7f;
-}
+  <!-- ✅ 여기서는 "디자인" 손대지 않고, 문제만 고치는 보정만 함 -->
+  <style>
+    :root{ --ctaH: 0px; }
 
-/* ✅ 이미지 겹침 방지 */
-.block{
-  position:relative;
-  margin:0;
-  padding:0;
-}
-.block img{
-  display:block;
-  width:100%;
-  height:auto;
-}
+    /* ✅ PC에서 섹션 이미지 겹침/틈 방지 (디자인 영향 최소) */
+    main.landing{
+      font-size:0;
+      line-height:0;
+    }
+    .block img{
+      display:block;
+      width:100%;
+      height:auto;
+      vertical-align:top;
+    }
 
-/* ✅ CTA 가림 방지 */
-body{
-  margin:0;
-  padding-bottom:var(--ctaH);
-}
+    /* ✅ CTA가 푸터를 가리지 않게 하단 패딩 확보 */
+    body{
+      padding-bottom: var(--ctaH);
+    }
 
-/* ✅ CTA 반투명 복원 */
-.hb-fixed-cta{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:rgba(255,255,255,0.72);
-  backdrop-filter:blur(10px);
-  -webkit-backdrop-filter:blur(10px);
-  border:0;
-  box-shadow:0 -10px 28px rgba(0,0,0,0.08);
-  z-index:999;
-}
+    /* ✅ PC에서 CTA가 화면 왼쪽으로 튀는 현상 보정
+       - CTA 내부 디자인은 style.css가 그대로 담당
+       - 위치/폭만 "landing(520px)"과 동일하게 맞춤
+    */
+    .hb-fixed-cta{
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      width: 100% !important;
+      max-width: 520px !important;
+      right: auto !important;
+    }
 
-.hb-branchBtn{
-  background:var(--eungasu);
-  color:#fff;
-  padding:10px;
-  text-align:center;
-  font-weight:800;
-}
-
-.hb-actionPanel{
-  display:flex;
-  justify-content:space-around;
-  padding:10px 0;
-}
-
-.hb-action{
-  text-decoration:none;
-  text-align:center;
-  color:var(--eungasu);
-  font-weight:800;
-}
-
-.hb-action .hb-ico{
-  display:block;
-  width:32px;
-  height:32px;
-  margin:0 auto 4px;
-  background-size:contain;
-  background-repeat:no-repeat;
-  background-position:center;
-}
-
-.hb-action:active{
-  background:rgba(44,111,127,0.06);
-}
-</style>
+    /* landing도 520 기준이면 CTA와 정확히 일치 */
+    main.landing{
+      max-width:520px;
+      margin:0 auto;
+    }
+  </style>
 </head>
 
 <body>
 
 <main class="landing">
 
-<section class="block">
-<img src="assets/01_hero.webp" alt="">
-</section>
+  <section class="block">
+    <img src="assets/01_hero.webp" alt="히어로">
+  </section>
 
-<section class="block">
-<img src="assets/02_store_intro.webp" alt="">
-</section>
+  <section class="block short">
+    <img src="assets/02_store_intro.webp" alt="매장소개">
+  </section>
 
-<section class="block">
-<img src="assets/03_accesary.webp" alt="">
-</section>
+  <section class="block short">
+    <img src="assets/03_accesary.webp" alt="악세사리">
+  </section>
 
-<section class="block">
-<img src="assets/04_review.webp" alt="">
-</section>
+  <section class="block short">
+    <img src="assets/04_review.webp" alt="리뷰">
+  </section>
 
-<section class="block">
-<img src="assets/05_footer.webp" alt="">
-</section>
+  <section class="block">
+    <img src="assets/05_footer.webp" alt="푸터">
+  </section>
 
 </main>
 
-<div class="hb-fixed-cta" id="hbFixedCta">
+<!-- Toast (style.css에 정의가 있으면 그대로 적용됨) -->
+<div id="toast" role="status" aria-live="polite"></div>
 
-<div class="hb-branchBtn">
-은하수한복 상담 바로가기
-</div>
+<!-- =========================
+   ✅ CTA 마크업은 한빔 구조 유지 (디자인은 style.css가 담당)
+========================= -->
+<div class="hb-fixed-cta" id="hbFixedCta" aria-label="하단 고정 CTA">
 
-<div class="hb-actionPanel">
+  <!-- 한빔은 버튼이었지만, 은하수는 지점선택이 없으니 "그대로 영역만" -->
+  <div class="hb-branchBtn" aria-label="은하수한복 상담 바로가기">
+    <span class="hb-branchTxt">은하수한복 상담 바로가기</span>
+  </div>
 
-<a class="hb-action" id="hbBtnCall" href="#">
-<span class="hb-ico" style="background-image:url('assets/btn-call.png');"></span>
-전화문의
-</a>
+  <div class="hb-actionPanel" aria-label="바로가기 버튼">
+    <a class="hb-action" id="hbBtnCall" href="#" aria-label="전화문의">
+      <span class="hb-ico" style="background-image:url('assets/btn-call.png');"></span>
+      <span class="hb-lbl">전화문의</span>
+    </a>
 
-<a class="hb-action" id="hbBtnKakao" href="#">
-<span class="hb-ico" style="background-image:url('assets/btn-kakao.png');"></span>
-카톡문의
-</a>
+    <a class="hb-action" id="hbBtnKakao" href="#" aria-label="카톡문의">
+      <span class="hb-ico" style="background-image:url('assets/btn-kakao.png');"></span>
+      <span class="hb-lbl">카톡문의</span>
+    </a>
 
-<a class="hb-action" id="hbBtnReserve" href="#">
-<span class="hb-ico" style="background-image:url('assets/btn-reserve.png');"></span>
-네이버예약
-</a>
+    <a class="hb-action" id="hbBtnReserve" href="#" aria-label="네이버예약">
+      <span class="hb-ico" style="background-image:url('assets/btn-reserve.png');"></span>
+      <span class="hb-lbl">네이버예약</span>
+    </a>
 
-<a class="hb-action" id="hbBtnMore" href="#">
-<span class="hb-ico" style="background-image:url('assets/btn-more.png');"></span>
-더 알아보기
-</a>
-
-</div>
+    <a class="hb-action" id="hbBtnMore" href="#" aria-label="더 알아보기">
+      <span class="hb-ico" style="background-image:url('assets/btn-more.png');"></span>
+      <span class="hb-lbl">더 알아보기</span>
+    </a>
+  </div>
 </div>
 
 <script>
-const BRAND_NAME="은하수한복";
-const GAS_WEBAPP_URL="https://script.google.com/macros/s/AKfycbzxcZWKjh33hmFLLXFAyiMlMIXN0LfUDHUgmd_78_U9lqG1XXruTGcVfn8IEuwY4BieyQ/exec";
+  /* =========================
+     CONFIG (은하수 전용)
+  ========================= */
+  const BRAND_NAME     = "은하수한복";
+  const GAS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzxcZWKjh33hmFLLXFAyiMlMIXN0LfUDHUgmd_78_U9lqG1XXruTGcVfn8IEuwY4BieyQ/exec";
 
-const FIXED_PHONE="01042122407";
-const FIXED_KAKAO="https://open.kakao.com/o/s6RE7Udh";
-const FIXED_RESERVE="https://m.booking.naver.com/booking/6/bizes/1027108";
-const FIXED_MORE="https://www.instagram.com/eunhasuhanbok/";
+  const FIXED_PHONE   = "01042122407";
+  const FIXED_KAKAO   = "https://open.kakao.com/o/s6RE7Udh";
+  const FIXED_RESERVE = "https://m.booking.naver.com/booking/6/bizes/1027108";
+  const FIXED_MORE    = "https://www.instagram.com/eunhasuhanbok/";
 
-function getSessionId(){
-const k="EUNGASU_SID";
-let v=localStorage.getItem(k);
-if(!v){
-v=Date.now()+"_"+Math.random().toString(16).slice(2);
-localStorage.setItem(k,v);
-}
-return v;
-}
+  /* =========================
+     Toast (null-safe)
+  ========================= */
+  const toastEl = document.getElementById('toast');
+  let toastTimer = null;
+  function showToast(msg){
+    if(!toastEl){ alert(msg); return; }
+    toastEl.textContent = String(msg || "");
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(()=>toastEl.classList.remove('show'), 2200);
+  }
 
-function sendClickEvent(action){
-const payload=JSON.stringify({
-type:"click",
-brand:BRAND_NAME,
-branch:BRAND_NAME,
-action:action,
-sessionId:getSessionId(),
-ts:Date.now()
-});
+  /* =========================
+     Session + Logger
+  ========================= */
+  function getSessionId(){
+    const k="EUNGASU_SID";
+    let v = localStorage.getItem(k);
+    if(!v){
+      const c = (typeof window !== "undefined") ? window.crypto : null;
+      v = (c && typeof c.randomUUID === "function")
+        ? c.randomUUID()
+        : (Date.now()+"_"+Math.random().toString(16).slice(2));
+      localStorage.setItem(k,v);
+    }
+    return v;
+  }
 
-navigator.sendBeacon(GAS_WEBAPP_URL,payload);
-}
+  function sendClickEvent({ action, source } = {}){
+    const payloadObj = {
+      type: "click",
+      action: String(action || "").trim(),
+      branch: BRAND_NAME, // ✅ 은하수는 단일 지점처럼 처리
+      source: String(source || "cta").trim(),
+      sessionId: getSessionId(),
+      page: location.pathname || "/",
+      referrer: document.referrer || "",
+      ua: navigator.userAgent || "",
+      ts: Date.now()
+    };
 
-document.getElementById("hbBtnCall").onclick=function(e){
-e.preventDefault();
-sendClickEvent("call");
-location.href="tel:"+FIXED_PHONE;
-};
+    const payload = JSON.stringify(payloadObj);
 
-document.getElementById("hbBtnKakao").onclick=function(e){
-e.preventDefault();
-sendClickEvent("kakao");
-window.open(FIXED_KAKAO,"_blank");
-};
+    try{
+      if(navigator.sendBeacon){
+        navigator.sendBeacon(GAS_WEBAPP_URL, payload);
+        return;
+      }
+    }catch(e){}
 
-document.getElementById("hbBtnReserve").onclick=function(e){
-e.preventDefault();
-sendClickEvent("reserve");
-window.open(FIXED_RESERVE,"_blank");
-};
+    try{
+      fetch(GAS_WEBAPP_URL, { method:"POST", body: payload, keepalive:true }).catch(()=>{});
+    }catch(e){}
+  }
 
-document.getElementById("hbBtnMore").onclick=function(e){
-e.preventDefault();
-sendClickEvent("more");
-window.open(FIXED_MORE,"_blank");
-};
+  /* =========================
+     CTA 이벤트
+  ========================= */
+  const btnCall = document.getElementById("hbBtnCall");
+  const btnKakao = document.getElementById("hbBtnKakao");
+  const btnReserve = document.getElementById("hbBtnReserve");
+  const btnMore = document.getElementById("hbBtnMore");
 
-function setHbCtaHeightVar(){
-const cta=document.getElementById("hbFixedCta");
-const h=cta?Math.round(cta.getBoundingClientRect().height):0;
-document.documentElement.style.setProperty('--ctaH',h+'px');
-}
-window.addEventListener('resize',setHbCtaHeightVar);
-window.addEventListener('load',()=>setTimeout(setHbCtaHeightVar,50));
-setHbCtaHeightVar();
+  if(btnCall) btnCall.addEventListener("click", (e)=>{
+    e.preventDefault();
+    sendClickEvent({ action:"call", source:"cta" });
+    window.location.href = "tel:" + FIXED_PHONE;
+  });
+
+  if(btnKakao) btnKakao.addEventListener("click", (e)=>{
+    e.preventDefault();
+    sendClickEvent({ action:"kakao", source:"cta" });
+    window.open(FIXED_KAKAO, "_blank", "noopener,noreferrer");
+  });
+
+  if(btnReserve) btnReserve.addEventListener("click", (e)=>{
+    e.preventDefault();
+    sendClickEvent({ action:"reserve", source:"cta" });
+    window.open(FIXED_RESERVE, "_blank", "noopener,noreferrer");
+  });
+
+  if(btnMore) btnMore.addEventListener("click", (e)=>{
+    e.preventDefault();
+    sendClickEvent({ action:"more", source:"cta" });
+    window.open(FIXED_MORE, "_blank", "noopener,noreferrer");
+  });
+
+  /* ✅ CTA 높이 변수(푸터 가림 방지) */
+  function setHbCtaHeightVar(){
+    const cta = document.getElementById("hbFixedCta");
+    const h = cta ? Math.round(cta.getBoundingClientRect().height) : 0;
+    document.documentElement.style.setProperty('--ctaH', h + 'px');
+  }
+  window.addEventListener('resize', setHbCtaHeightVar);
+  window.addEventListener('orientationchange', ()=> setTimeout(setHbCtaHeightVar, 250));
+  window.addEventListener('load', ()=> setTimeout(setHbCtaHeightVar, 50));
+  setHbCtaHeightVar();
 </script>
 
 </body>
