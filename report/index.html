@@ -13,266 +13,647 @@
 
 <style>
 :root{
-  --wine:#2c6f7f;  /* ✅ 메인 컬러 교체 */
+  --main:#2c6f7f;
   --bg:#ffffff;
   --text:#1b1b1b;
   --muted:#8c8c8c;
+  --radius:16px;
+  --pad:16px;
+  --border:2px solid var(--main);
+  --softBorder:1px solid rgba(44,111,127,0.25);
+  --shadow:0 8px 20px rgba(20,10,10,0.06);
+
+  --btnPadY:6px;
+  --btnPadY2:7px;
+  --inputPadY:10px;
+  --cardPad:12px;
 }
+*{ box-sizing:border-box; }
 body{
   margin:0;
-  background:#fff;
+  background:var(--bg);
+  color:var(--text);
   font-family:"Paperlogy",-apple-system,BlinkMacSystemFont,"Noto Sans KR",sans-serif;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
 }
 .wrap{ max-width:520px; margin:0 auto; padding:0 16px 28px; }
 .title{
-  background:var(--wine);
-  color:#fff;
-  padding:18px 16px;
-  font-size:18px;
-  font-weight:800;
-  border-bottom-left-radius:20px;
-  border-bottom-right-radius:20px;
+  background:var(--main); color:#fff; padding:18px 16px;
+  font-size:18px; font-weight:800; letter-spacing:-0.4px;
+  border-bottom-left-radius:20px; border-bottom-right-radius:20px;
   margin:0 -16px 16px;
 }
-.card{
-  background:#fff;
-  border:2px solid var(--wine);
-  border-radius:16px;
-  padding:16px;
-}
-
-.sectionTitle{
-  margin-top:10px;
-  font-size:13px;
-  font-weight:900;
-  color:var(--wine);
-}
-
-.periodRow{ display:flex; gap:10px; margin-top:8px; }
-.periodRow input{
-  flex:1;
-  border:2px solid var(--wine);
-  border-radius:14px;
-  padding:10px;
-  font-weight:900;
-}
+.card{ background:#fff; border:var(--border); border-radius:var(--radius); padding:var(--pad); }
 
 .toggleRow{ display:flex; gap:8px; margin-top:10px; }
 .toggleRow button{
-  flex:1;
-  border:2px solid var(--wine);
-  background:#fff;
-  color:var(--wine);
-  border-radius:14px;
-  padding:6px 0;
-  font-weight:900;
-  cursor:pointer;
+  flex:1; border:var(--border); background:#fff; color:var(--main);
+  border-radius:14px; padding:var(--btnPadY) 0;
+  font-weight:900; font-size:13px; cursor:pointer;
+  transition:transform .06s ease, filter .12s ease;
 }
-.toggleRow button.active{
-  background:var(--wine);
-  color:#fff;
+.toggleRow button:active{ transform:translateY(1px); filter:brightness(0.99); }
+.toggleRow button.active{ background:var(--main); color:#fff; }
+
+.sectionTitle{ margin-top:10px; font-size:13px; font-weight:900; letter-spacing:-0.2px; color:var(--main); }
+
+.periodRow{ display:flex; gap:10px; margin-top:8px; }
+.periodRow input[type="date"]{
+  flex:1; width:100%; border:var(--border); border-radius:14px;
+  padding:var(--inputPadY) 12px; font-size:13px; font-weight:900; outline:none;
+  background:#fff; color:var(--text); min-width:0;
+  box-shadow:inset 0 1px 0 rgba(0,0,0,0.03);
 }
 
-.btnRow{ display:flex; gap:10px; margin-top:10px; }
-.applyBtn, .exportBtn{
-  flex:1;
-  border:2px solid var(--wine);
-  border-radius:14px;
-  padding:7px 0;
-  font-weight:900;
-  cursor:pointer;
+.presetRow{ display:flex; gap:8px; margin-top:8px; }
+.presetRow button{
+  flex:1; border:var(--border); background:#fff; color:var(--main);
+  border-radius:14px; padding:var(--btnPadY) 0;
+  font-weight:900; font-size:13px; cursor:pointer;
+  transition:transform .06s ease, filter .12s ease;
 }
-.applyBtn{ background:var(--wine); color:#fff; }
-.exportBtn{ background:#fff; color:var(--wine); }
+.presetRow button:active{ transform:translateY(1px); filter:brightness(0.99); }
+.presetRow button.active{ background:var(--main); color:#fff; }
 
-.meta{
-  display:flex;
-  justify-content:space-between;
-  margin-bottom:8px;
+.btnRow{ display:flex; gap:10px; margin-top:8px; }
+.applyBtn{
+  flex:1; border:var(--border); background:var(--main); color:#fff;
+  border-radius:14px; padding:var(--btnPadY2) 0;
+  font-weight:900; font-size:13px; cursor:pointer;
+  transition:transform .06s ease, filter .12s ease;
 }
+.applyBtn:active{ transform:translateY(1px); filter:brightness(0.99); }
+
+.exportBtn{
+  width:120px; border:var(--border); background:#fff; color:var(--main);
+  border-radius:14px; padding:var(--btnPadY2) 0;
+  font-weight:900; font-size:13px; cursor:pointer; flex:0 0 120px;
+  transition:transform .06s ease, filter .12s ease;
+}
+.exportBtn:active{ transform:translateY(1px); filter:brightness(0.99); }
+
+.chartCard{ margin-top:12px; border-color:rgba(44,111,127,0.75); }
+.meta{ display:flex; justify-content:space-between; align-items:flex-end; gap:10px; margin-bottom:8px; }
+.meta .left{ display:flex; flex-direction:column; gap:2px; min-width:0; }
 .meta .big{
-  font-size:16px;
-  font-weight:900;
-  color:var(--wine);
+  font-size:16px; font-weight:900; letter-spacing:-0.4px; color:var(--main);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
+.meta .small{ font-size:12px; color:var(--muted); }
+
 .chartWrap{
-  height:290px;
+  height:290px; position:relative;
+  border-radius:14px; overflow:hidden;
+  border:var(--softBorder);
+  box-shadow:var(--shadow);
 }
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-  margin-top:12px;
+canvas#lineChart{ width:100% !important; height:100% !important; display:block; }
+
+.error{
+  color:#c0392b; font-size:12px; margin-top:10px; white-space:pre-wrap; display:none;
+  border:1px dashed rgba(192,57,43,0.35);
+  border-radius:12px; padding:10px 12px;
 }
+
+.grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:12px; }
 .sq{
-  border:2px solid var(--wine);
-  border-radius:14px;
-  padding:12px;
+  display:flex; flex-direction:column; justify-content:space-between;
+  padding:var(--cardPad);
+  min-height:120px;
 }
-.lbl{ font-size:13px; font-weight:900; color:#888; }
-.val{ font-size:28px; font-weight:900; color:var(--wine); }
+.lbl{ font-size:13px; font-weight:900; color:var(--muted); letter-spacing:-0.2px; }
+.val{ font-size:28px; font-weight:900; letter-spacing:-0.8px; color:var(--main); }
+
+/* Export doc */
+.exportDocWrap{
+  position:fixed; left:-99999px; top:0; width:860px;
+  background:#fff; padding:28px;
+  font-family:"Paperlogy",-apple-system,BlinkMacSystemFont,"Noto Sans KR",sans-serif;
+  color:#111;
+}
+.docHeader{ display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:14px; }
+.docTitle{ font-size:22px; font-weight:900; letter-spacing:-0.6px; color:var(--main); line-height:1.2; }
+.docMeta{ font-size:13px; color:#555; line-height:1.55; text-align:right; white-space:pre-line; }
+.docBox{ border:2px solid var(--main); border-radius:18px; padding:18px; }
+.docChartRow{ display:grid; grid-template-columns: 1.2fr 0.8fr; gap:14px; align-items:stretch; }
+.docChartCard{ border:2px solid var(--main); border-radius:16px; padding:14px; background:#fff; }
+.docChartWrap{ height:280px; position:relative; }
+#exportChart{ width:100% !important; height:100% !important; display:block; }
+.docCards{ display:grid; grid-template-columns:repeat(2, 1fr); gap:12px; }
+.docMini{ border:2px solid var(--main); border-radius:16px; padding:14px; background:#fff; display:flex; flex-direction:column; justify-content:space-between; min-height:132px; }
+.docMini .t{ font-size:13px; color:#666; font-weight:900; }
+.docMini .n{ font-size:34px; color:var(--main); font-weight:900; letter-spacing:-0.8px; }
+.docFooter{ margin-top:12px; font-size:12px; color:#777; line-height:1.45; }
+
+@media (min-width: 900px){
+  .wrap{ max-width: 980px; }
+  .grid{ grid-template-columns:repeat(4,1fr); }
+  .sq{ min-height:110px; }
+  .chartWrap{ height: 360px; }
+}
 </style>
 </head>
 
 <body>
-<div class="wrap">
-  <div class="title">은하수한복 랜딩 유입 리포트</div>
+  <div class="wrap">
+    <div class="title">은하수한복 랜딩 유입 리포트</div>
 
-  <div class="card">
-
-    <div class="toggleRow">
-      <button data-group="day" class="active">일별</button>
-      <button data-group="month">월별</button>
-    </div>
-
-    <div class="sectionTitle">기간 선택</div>
-    <div class="periodRow">
-      <input id="fromDate" type="date">
-      <input id="toDate" type="date">
-    </div>
-
-    <div class="btnRow">
-      <button class="applyBtn" id="applyBtn">조회</button>
-      <button class="exportBtn" id="exportBtn">리포트 저장</button>
-    </div>
-
-    <div class="card" style="margin-top:12px;">
-      <div class="meta">
-        <div class="big">은하수한복</div>
-        <div class="big" id="metaTotal">0</div>
+    <div class="card">
+      <div class="toggleRow" role="tablist" aria-label="리포트 기준">
+        <button type="button" data-group="day" class="active">일별</button>
+        <button type="button" data-group="month">월별</button>
       </div>
-      <div class="chartWrap">
-        <canvas id="lineChart"></canvas>
+
+      <div class="sectionTitle">기간 선택</div>
+      <div class="periodRow">
+        <input id="fromDate" type="date" aria-label="시작일">
+        <input id="toDate" type="date" aria-label="종료일">
+      </div>
+
+      <div class="presetRow" role="tablist" aria-label="빠른 기간 선택">
+        <button type="button" data-preset="7d" class="active">1주일</button>
+        <button type="button" data-preset="1m">1개월</button>
+        <button type="button" data-preset="3m">3개월</button>
+      </div>
+
+      <div class="btnRow">
+        <button class="applyBtn" id="applyBtn" type="button">조회</button>
+        <button class="exportBtn" id="exportBtn" type="button">리포트 저장</button>
+      </div>
+
+      <div class="card chartCard">
+        <div class="meta">
+          <div class="left">
+            <div class="big" id="metaTitle">은하수한복</div>
+            <div class="small" id="metaRange">-</div>
+          </div>
+          <div class="big" id="metaTotal">0</div>
+        </div>
+
+        <div class="chartWrap">
+          <canvas id="lineChart"></canvas>
+        </div>
+
+        <div class="error" id="errBox"></div>
+      </div>
+
+      <div class="grid">
+        <div class="card sq">
+          <div class="lbl">네이버예약</div>
+          <div class="val" id="cardReserve">0</div>
+        </div>
+        <div class="card sq">
+          <div class="lbl">전화문의</div>
+          <div class="val" id="cardCall">0</div>
+        </div>
+        <div class="card sq">
+          <div class="lbl">카톡문의</div>
+          <div class="val" id="cardKakao">0</div>
+        </div>
+        <div class="card sq">
+          <div class="lbl">더 알아보기</div>
+          <div class="val" id="cardMore">0</div>
+        </div>
       </div>
     </div>
-
-    <div class="grid">
-      <div class="sq"><div class="lbl">네이버예약</div><div class="val" id="cardReserve">0</div></div>
-      <div class="sq"><div class="lbl">전화문의</div><div class="val" id="cardCall">0</div></div>
-      <div class="sq"><div class="lbl">카톡문의</div><div class="val" id="cardKakao">0</div></div>
-      <div class="sq"><div class="lbl">더 알아보기</div><div class="val" id="cardMore">0</div></div>
-    </div>
-
   </div>
-</div>
+
+  <!-- Export doc -->
+  <div class="exportDocWrap" id="exportDoc">
+    <div class="docHeader">
+      <div>
+        <div class="docTitle">은하수한복 랜딩 유입 리포트</div>
+        <div style="margin-top:6px; font-size:13px; color:#444; font-weight:800;" id="exportSub">공유용 리포트</div>
+      </div>
+      <div class="docMeta" id="exportMeta"></div>
+    </div>
+
+    <div class="docBox">
+      <div class="docChartRow">
+        <div class="docChartCard">
+          <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:8px;">
+            <div style="font-weight:900; color:var(--main); font-size:14px;" id="exportChartLabel">기간 내 추이</div>
+            <div style="font-weight:900; color:var(--main); font-size:16px;" id="exportTotal">0</div>
+          </div>
+          <div class="docChartWrap">
+            <canvas id="exportChart"></canvas>
+          </div>
+        </div>
+
+        <div class="docCards">
+          <div class="docMini"><div class="t">네이버예약</div><div class="n" id="exportReserve">0</div></div>
+          <div class="docMini"><div class="t">전화문의</div><div class="n" id="exportCall">0</div></div>
+          <div class="docMini"><div class="t">카톡문의</div><div class="n" id="exportKakao">0</div></div>
+          <div class="docMini"><div class="t">더 알아보기</div><div class="n" id="exportMore">0</div></div>
+        </div>
+      </div>
+
+      <div class="docFooter" id="exportFoot">• reserve/call/kakao/more는 CTA 클릭 로그 기준입니다.</div>
+    </div>
+  </div>
 
 <script>
-const GAS_URL = "https://script.google.com/macros/s/AKfycbzxcZWKjh33hmFLLXFAyiMlMIXN0LfUDHUgmd_78_U9lqG1XXruTGcVfn8IEuwY4BieyQ/exec기";
+  /* ✅ 은하수 GAS URL (네가 준 값 반영) */
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbzxcZWKjh33hmFLLXFAyiMlMIXN0LfUDHUgmd_78_U9lqG1XXruTGcVfn8IEuwY4BieyQ/exec";
 
-const COLORS = {
-  reserve:"#1F5EFF",
-  call:"#E03131",
-  kakao:"#2F9E44"
-};
+  /* ✅ 랜딩에서 branch를 "은하수한복"으로 찍고 있으니, 리포트도 동일하게 고정 */
+  const BRANCH = "은하수한복";
 
-const $=id=>document.getElementById(id);
-const state={ group:"day", lastData:null };
+  const COLORS = {
+    reserve: { border: "#1F5EFF", fill: "rgba(31,94,255,0.22)" },
+    call:    { border: "#E03131", fill: "rgba(224,49,49,0.22)" },
+    kakao:   { border: "#2F9E44", fill: "rgba(47,158,68,0.22)" }
+  };
 
-function fmt(n){ return Number(n||0).toLocaleString("ko-KR"); }
-function dateISO(d){ return d.toISOString().slice(0,10); }
+  const $ = (id)=>document.getElementById(id);
+  const state = { group:"day", lastData:null, lastUrl:"" };
 
-function initDate(){
-  const now=new Date();
-  const from=new Date(now);
-  from.setDate(now.getDate()-6);
-  $("fromDate").value=dateISO(from);
-  $("toDate").value=dateISO(now);
-}
+  function fmt(n){ try{return Number(n||0).toLocaleString("ko-KR");}catch(e){return String(n||0);} }
 
-function setGroup(g){
-  state.group=g;
-  document.querySelectorAll(".toggleRow button").forEach(b=>{
-    b.classList.toggle("active",b.dataset.group===g);
+  function dateISO(d){
+    const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,"0"), da=String(d.getDate()).padStart(2,"0");
+    return `${y}-${m}-${da}`;
+  }
+  function parseISODateLocal_(ymd){
+    const s = String(ymd||"").trim();
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(s)) return null;
+    const [y,m,d]=s.split("-").map(Number);
+    return new Date(y, m-1, d, 0,0,0,0);
+  }
+  function ymdKey_(d){
+    const y=d.getFullYear();
+    const m=String(d.getMonth()+1).padStart(2,"0");
+    const da=String(d.getDate()).padStart(2,"0");
+    return `${y}-${m}-${da}`;
+  }
+  function ymKey_(d){
+    const y=d.getFullYear();
+    const m=String(d.getMonth()+1).padStart(2,"0");
+    return `${y}-${m}`;
+  }
+
+  function applyPreset(preset){
+    const now = new Date();
+    const to = new Date(now);
+    const from = new Date(now);
+
+    if(preset==="7d"){ from.setDate(from.getDate()-6); }
+    else if(preset==="1m"){ from.setMonth(from.getMonth()-1); from.setDate(from.getDate()+1); }
+    else if(preset==="3m"){ from.setMonth(from.getMonth()-3); from.setDate(from.getDate()+1); }
+
+    $("fromDate").value = dateISO(from);
+    $("toDate").value = dateISO(to);
+
+    document.querySelectorAll(".presetRow button").forEach(b=>{
+      b.classList.toggle("active", b.dataset.preset===preset);
+    });
+  }
+  function clearPresetActive(){ document.querySelectorAll(".presetRow button").forEach(b=>b.classList.remove("active")); }
+
+  function setGroup(group){
+    state.group = (String(group||"day").toLowerCase()==="month") ? "month" : "day";
+    document.querySelectorAll(".toggleRow button").forEach(b=>{
+      b.classList.toggle("active", b.dataset.group===state.group);
+    });
+  }
+
+  function getRangeSafe(){
+    let from=$("fromDate").value, to=$("toDate").value;
+    if(!from||!to){ applyPreset("7d"); from=$("fromDate").value; to=$("toDate").value; }
+    return { from, to };
+  }
+
+  function showError(msg){
+    const b=$("errBox");
+    b.style.display="block";
+    b.textContent=msg;
+  }
+  function hideError(){
+    const b=$("errBox");
+    b.style.display="none";
+    b.textContent="";
+  }
+
+  window.addEventListener("error", (e)=>{
+    const msg = [
+      "프론트 에러 감지",
+      String(e?.message || e?.error?.message || "UNKNOWN_ERROR"),
+      e?.filename ? ("file: " + e.filename) : "",
+      (Number.isFinite(e?.lineno) ? ("line: " + e.lineno) : "")
+    ].filter(Boolean).join("\n");
+    showError(msg);
   });
-}
+  window.addEventListener("unhandledrejection", (e)=>{
+    const reason = e?.reason;
+    const msg = [
+      "Promise 에러 감지",
+      String(reason?.message || reason || "UNKNOWN_REJECTION"),
+      state.lastUrl ? ("lastUrl: " + state.lastUrl) : ""
+    ].filter(Boolean).join("\n");
+    showError(msg);
+  });
 
-// ✅ JSONP 로더(한빔 방식과 동일하게 안정화)
-function loadJsonp(url){
-  return new Promise((resolve,reject)=>{
-    const cb="__eg_cb_"+Math.random().toString(16).slice(2);
-    const s=document.createElement("script");
-    const sep=url.includes("?") ? "&" : "?";
-    const fullUrl=url + sep + "callback=" + cb + "&_=" + Date.now();
+  function setCards(cards){
+    const c=cards||{};
+    $("metaTotal").textContent = fmt(c.total||0);
+    $("cardReserve").textContent = fmt(c.reserve||0);
+    $("cardCall").textContent = fmt(c.call||0);
+    $("cardKakao").textContent = fmt(c.kakao||0);
+    $("cardMore").textContent = fmt(c.more||0);
+  }
 
-    let done=false;
-    const timer=setTimeout(()=>{
-      if(done) return;
-      done=true;
-      try{ delete window[cb]; }catch(_){}
-      try{ s.remove(); }catch(_){}
-      reject(new Error("JSONP_TIMEOUT\n" + fullUrl));
-    }, 8000);
+  /* ✅ 조회기간 전체 날짜/월을 생성하고 0 채우기 */
+  function fillTrendToFullRange_(data, fromYmd, toYmd, group){
+    const labelsIn = Array.isArray(data?.labels) ? data.labels : [];
+    const s = data?.series || {};
+    const map = {};
+    labelsIn.forEach((k, i)=>{
+      map[k] = {
+        reserve: Number(s.reserve?.[i] || 0),
+        call:   Number(s.call?.[i] || 0),
+        kakao:  Number(s.kakao?.[i] || 0)
+      };
+    });
 
-    window[cb]=(data)=>{
-      if(done) return;
-      done=true;
-      clearTimeout(timer);
-      try{ resolve(data); }
-      finally{
+    const fromD = parseISODateLocal_(fromYmd);
+    const toD   = parseISODateLocal_(toYmd);
+    if(!fromD || !toD){
+      return { labels: labelsIn, series: {reserve:s.reserve||[], call:s.call||[], kakao:s.kakao||[]} };
+    }
+
+    const grp = (String(group||"day").toLowerCase()==="month") ? "month" : "day";
+    const labelsOut = [];
+    const outSeries = { reserve:[], call:[], kakao:[] };
+
+    if(grp==="day"){
+      const cur = new Date(fromD.getTime());
+      while(cur.getTime() <= toD.getTime()){
+        const k = ymdKey_(cur);
+        labelsOut.push(k);
+        outSeries.reserve.push(map[k]?.reserve || 0);
+        outSeries.call.push(map[k]?.call || 0);
+        outSeries.kakao.push(map[k]?.kakao || 0);
+        cur.setDate(cur.getDate()+1);
+      }
+    }else{
+      const cur = new Date(fromD.getFullYear(), fromD.getMonth(), 1, 0,0,0,0);
+      const end = new Date(toD.getFullYear(), toD.getMonth(), 1, 0,0,0,0);
+      while(cur.getTime() <= end.getTime()){
+        const k = ymKey_(cur);
+        labelsOut.push(k);
+        outSeries.reserve.push(map[k]?.reserve || 0);
+        outSeries.call.push(map[k]?.call || 0);
+        outSeries.kakao.push(map[k]?.kakao || 0);
+        cur.setMonth(cur.getMonth()+1);
+      }
+    }
+
+    return { labels: labelsOut, series: outSeries };
+  }
+
+  /* JSONP */
+  function loadJsonp(url){
+    return new Promise((resolve,reject)=>{
+      const cb="__eg_cb_"+Math.random().toString(16).slice(2);
+      const s=document.createElement("script");
+      const sep=url.includes("?") ? "&" : "?";
+
+      const fullUrl = url + sep + "callback=" + cb + "&_=" + Date.now();
+      state.lastUrl = fullUrl;
+
+      let done=false;
+      const timer=setTimeout(()=>{
+        if(done) return;
+        done=true;
         try{ delete window[cb]; }catch(_){}
         try{ s.remove(); }catch(_){}
+        reject(new Error("JSONP_TIMEOUT (8s)\n" + fullUrl));
+      }, 8000);
+
+      window[cb]=(data)=>{
+        if(done) return;
+        done=true;
+        clearTimeout(timer);
+        try{ resolve(data); }
+        finally{
+          try{ delete window[cb]; }catch(_){}
+          try{ s.remove(); }catch(_){}
+        }
+      };
+
+      s.src = fullUrl;
+      s.async = true;
+      s.onerror=()=>{
+        if(done) return;
+        done=true;
+        clearTimeout(timer);
+        try{ delete window[cb]; }catch(_){}
+        try{ s.remove(); }catch(_){}
+        reject(new Error("JSONP_LOAD_FAILED\n" + fullUrl));
+      };
+
+      document.head.appendChild(s);
+    });
+  }
+
+  async function fetchReport({branch, from, to, group}){
+    const url = `${GAS_URL}?page=report`
+      + `&branch=${encodeURIComponent(branch)}`
+      + `&group=${encodeURIComponent(group)}`
+      + `&from=${encodeURIComponent(from)}`
+      + `&to=${encodeURIComponent(to)}`;
+    return await loadJsonp(url);
+  }
+
+  let chart=null;
+  function destroyChart(){ if(chart){ chart.destroy(); chart=null; } }
+
+  function baseOptions(){
+    return {
+      responsive:true,
+      maintainAspectRatio:false,
+      plugins:{
+        legend:{ display:true, labels:{ usePointStyle:true, boxWidth:10, boxHeight:10 } },
+        tooltip:{
+          callbacks:{
+            label:(c)=>{
+              const lbl = c.dataset.label ? (c.dataset.label + ": ") : "";
+              return " " + lbl + fmt(c.raw);
+            }
+          }
+        }
+      },
+      scales:{
+        x:{ type:"category", position:"bottom", ticks:{ color:"#8c8c8c", maxRotation:0, minRotation:0, autoSkip:true }, grid:{ color:"rgba(44,111,127,0.10)" } },
+        y:{ position:"left", beginAtZero:true, ticks:{ color:"rgba(44,111,127,1)" }, grid:{ color:"rgba(44,111,127,0.10)" } }
+      }
+    };
+  }
+
+  function renderMultiLine(labels, series){
+    const ctx=$("lineChart").getContext("2d");
+    destroyChart();
+
+    const opt = baseOptions();
+
+    chart = new Chart(ctx, {
+      type:"line",
+      data:{
+        labels: labels || [],
+        datasets:[
+          { label:"네이버예약", data: series?.reserve || [], borderColor: COLORS.reserve.border, backgroundColor: COLORS.reserve.fill, tension: 0.35, pointRadius: (state.group==="month") ? 0 : 2, pointHoverRadius: (state.group==="month") ? 0 : 4 },
+          { label:"전화문의",   data: series?.call || [],    borderColor: COLORS.call.border,    backgroundColor: COLORS.call.fill,    tension: 0.35, pointRadius: (state.group==="month") ? 0 : 2, pointHoverRadius: (state.group==="month") ? 0 : 4 },
+          { label:"카톡문의",   data: series?.kakao || [],   borderColor: COLORS.kakao.border,   backgroundColor: COLORS.kakao.fill,   tension: 0.35, pointRadius: (state.group==="month") ? 0 : 2, pointHoverRadius: (state.group==="month") ? 0 : 4 }
+        ]
+      },
+      options: opt
+    });
+  }
+
+  /* Export */
+  let exportChart=null;
+  function destroyExportChart(){ if(exportChart){ exportChart.destroy(); exportChart=null; } }
+
+  function renderExport(labels, series){
+    const ctx=$("exportChart").getContext("2d");
+    destroyExportChart();
+
+    const common = {
+      responsive:true,
+      maintainAspectRatio:false,
+      animation:false,
+      plugins:{ legend:{ display:true } },
+      scales:{
+        x:{ type:"category", position:"bottom", grid:{ color:"rgba(44,111,127,0.08)" } },
+        y:{ position:"left", beginAtZero:true, grid:{ color:"rgba(44,111,127,0.08)" } }
       }
     };
 
-    s.src=fullUrl;
-    s.async=true;
-    s.onerror=()=>{
-      if(done) return;
-      done=true;
-      clearTimeout(timer);
-      try{ delete window[cb]; }catch(_){}
-      try{ s.remove(); }catch(_){}
-      reject(new Error("JSONP_LOAD_FAILED\n" + fullUrl));
-    };
+    exportChart = new Chart(ctx,{
+      type:"line",
+      data:{
+        labels: labels||[],
+        datasets:[
+          { label:"네이버예약", data: series?.reserve||[], borderColor:COLORS.reserve.border, backgroundColor:COLORS.reserve.fill, tension:0.35, pointRadius:0 },
+          { label:"전화문의",   data: series?.call||[],    borderColor:COLORS.call.border,    backgroundColor:COLORS.call.fill,    tension:0.35, pointRadius:0 },
+          { label:"카톡문의",   data: series?.kakao||[],   borderColor:COLORS.kakao.border,   backgroundColor:COLORS.kakao.fill,   tension:0.35, pointRadius:0 }
+        ]
+      },
+      options: common
+    });
+  }
 
-    document.head.appendChild(s);
-  });
-}
+  function safeFileName(from, to, group){
+    const g=(group==="month")?"month":"day";
+    return `eungasu_report_${g}_${from}_${to}.png`;
+  }
 
-async function fetchReport(){
-  const from=$("fromDate").value;
-  const to=$("toDate").value;
-  const url=`${GAS_URL}?page=report&from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`;
-  return await loadJsonp(url);
-}
+  async function exportAsImage(){
+    if(!state.lastData){
+      await refresh();
+      if(!state.lastData){ alert("리포트를 먼저 조회해 주세요."); return; }
+    }
 
-let chart=null;
-function render(labels,series){
-  if(chart) chart.destroy();
-  chart=new Chart($("lineChart"),{
-    type:"line",
-    data:{
-      labels: labels || [],
-      datasets:[
-        {label:"네이버예약",data:series?.reserve||[],borderColor:COLORS.reserve,tension:0.35,pointRadius:(state.group==="month")?0:2,pointHoverRadius:(state.group==="month")?0:4},
-        {label:"전화문의",data:series?.call||[],borderColor:COLORS.call,tension:0.35,pointRadius:(state.group==="month")?0:2,pointHoverRadius:(state.group==="month")?0:4},
-        {label:"카톡문의",data:series?.kakao||[],borderColor:COLORS.kakao,tension:0.35,pointRadius:(state.group==="month")?0:2,pointHoverRadius:(state.group==="month")?0:4}
-      ]
-    },
-    options:{responsive:true,maintainAspectRatio:false}
-  });
-}
+    const {from,to}=getRangeSafe();
+    const group=state.group;
+    const gLabel=(group==="month")?"월별":"일별";
 
-async function refresh(){
-  const data=await fetchReport();
-  if(!data || typeof data!=="object") return;
+    const now=new Date();
+    const generatedAt =
+      `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ` +
+      `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
 
-  $("metaTotal").textContent=fmt(data?.cards?.total||0);
-  $("cardReserve").textContent=fmt(data?.cards?.reserve||0);
-  $("cardCall").textContent=fmt(data?.cards?.call||0);
-  $("cardKakao").textContent=fmt(data?.cards?.kakao||0);
-  $("cardMore").textContent=fmt(data?.cards?.more||0);
+    $("exportSub").textContent = `클릭 요약 (${gLabel})`;
+    $("exportMeta").textContent =
+      `브랜드: ${BRANCH}\n기준: ${gLabel}\n기간: ${from} ~ ${to}\n생성: ${generatedAt}`;
 
-  render(data.labels||[], data.series||{reserve:[],call:[],kakao:[]});
-}
+    const cards=state.lastData.cards||{};
+    $("exportTotal").textContent=fmt(cards.total||0);
+    $("exportReserve").textContent=fmt(cards.reserve||0);
+    $("exportCall").textContent=fmt(cards.call||0);
+    $("exportKakao").textContent=fmt(cards.kakao||0);
+    $("exportMore").textContent=fmt(cards.more||0);
 
-$("applyBtn").addEventListener("click", refresh);
-document.querySelectorAll(".toggleRow button").forEach(b=>{
-  b.addEventListener("click", ()=>{ setGroup(b.dataset.group); refresh(); });
-});
+    renderExport(state.lastData.labels||[], state.lastData.series||{});
+    await new Promise(r=>setTimeout(r,140));
 
-initDate();
-refresh();
+    const canvas = await html2canvas($("exportDoc"), { backgroundColor:"#fff", scale:2, useCORS:true });
+    const a=document.createElement("a");
+    a.href=canvas.toDataURL("image/png");
+    a.download=safeFileName(from, to, group);
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
+
+  async function refresh(){
+    hideError();
+    const {from,to}=getRangeSafe();
+
+    try{
+      const dataRaw = await fetchReport({ branch: BRANCH, from, to, group: state.group });
+      if(!dataRaw || typeof dataRaw !== "object"){
+        throw new Error("INVALID_REPORT_RESPONSE\n" + String(dataRaw));
+      }
+
+      const data = dataRaw;
+
+      /* ✅ 은하수는 단일 브랜드 추이만 쓰므로, 날짜/월 0 채우기만 적용 */
+      const filled = fillTrendToFullRange_(data, from, to, state.group);
+      data.labels = filled.labels;
+      data.series = filled.series;
+
+      state.lastData = data;
+
+      const gLabel=(state.group==="month")?"월별":"일별";
+      $("metaTitle").textContent = `은하수한복 · ${gLabel}`;
+      $("metaRange").textContent = `${from} ~ ${to}`;
+
+      setCards(data.cards);
+      renderMultiLine(data.labels||[], data.series||{});
+
+    }catch(err){
+      state.lastData=null;
+      const msg = [
+        "리포트 로드 실패",
+        (err?.message || String(err)),
+        state.lastUrl ? ("\nlastUrl:\n" + state.lastUrl) : ""
+      ].join("\n");
+      showError(msg);
+      setCards({total:0,reserve:0,call:0,kakao:0,more:0});
+      destroyChart();
+    }
+  }
+
+  function init(){
+    applyPreset("7d");
+    setGroup("day");
+
+    document.querySelectorAll(".toggleRow button").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        setGroup(btn.dataset.group);
+        refresh();
+      });
+    });
+
+    document.querySelectorAll(".presetRow button").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        applyPreset(btn.dataset.preset);
+        refresh();
+      });
+    });
+
+    $("fromDate").addEventListener("change", clearPresetActive);
+    $("toDate").addEventListener("change", clearPresetActive);
+
+    $("applyBtn").addEventListener("click", refresh);
+    $("exportBtn").addEventListener("click", exportAsImage);
+
+    refresh();
+  }
+
+  init();
 </script>
 </body>
 </html>
