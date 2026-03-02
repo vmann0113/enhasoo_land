@@ -1,158 +1,171 @@
 <!doctype html>
 <html lang="ko">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>은하수한복 랜딩 유입 리포트</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>은하수한복 랜딩 유입 리포트</title>
 
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307@1.0/Paperlogy.css">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307@1.0/Paperlogy.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    :root{
+      --main:#2c6f7f;
+      --bg:#ffffff;
+      --text:#1b1b1b;
+      --muted:#8c8c8c;
 
-<style>
-:root{
-  --main:#2c6f7f;
-  --bg:#ffffff;
-  --text:#1b1b1b;
-  --muted:#8c8c8c;
-  --radius:16px;
-  --pad:16px;
-  --border:2px solid var(--main);
-  --softBorder:1px solid rgba(44,111,127,0.25);
-  --shadow:0 8px 20px rgba(20,10,10,0.06);
+      --radius:16px;
+      --pad:16px;
+      --border:2px solid var(--main);
+      --softBorder:1px solid rgba(44,111,127,0.25);
+      --shadow:0 8px 20px rgba(20,10,10,0.06);
 
-  --btnPadY:6px;
-  --btnPadY2:7px;
-  --inputPadY:10px;
-  --cardPad:12px;
-}
-*{ box-sizing:border-box; }
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:"Paperlogy",-apple-system,BlinkMacSystemFont,"Noto Sans KR",sans-serif;
-  -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
-}
-.wrap{ max-width:520px; margin:0 auto; padding:0 16px 28px; }
-.title{
-  background:var(--main); color:#fff; padding:18px 16px;
-  font-size:18px; font-weight:800; letter-spacing:-0.4px;
-  border-bottom-left-radius:20px; border-bottom-right-radius:20px;
-  margin:0 -16px 16px;
-}
-.card{ background:#fff; border:var(--border); border-radius:var(--radius); padding:var(--pad); }
+      /* 버튼/카드 높이 */
+      --btnPadY:6px;
+      --btnPadY2:7px;
+      --inputPadY:10px;
+      --cardPad:12px;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:"Paperlogy",-apple-system,BlinkMacSystemFont,"Noto Sans KR",sans-serif;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+    .wrap{ max-width:520px; margin:0 auto; padding:0 16px 28px; }
+    .title{
+      background:var(--main); color:#fff; padding:18px 16px;
+      font-size:18px; font-weight:900; letter-spacing:-0.4px;
+      border-bottom-left-radius:20px; border-bottom-right-radius:20px;
+      margin:0 -16px 16px;
+    }
+    .card{ background:#fff; border:var(--border); border-radius:var(--radius); padding:var(--pad); }
 
-.toggleRow{ display:flex; gap:8px; margin-top:10px; }
-.toggleRow button{
-  flex:1; border:var(--border); background:#fff; color:var(--main);
-  border-radius:14px; padding:var(--btnPadY) 0;
-  font-weight:900; font-size:13px; cursor:pointer;
-  transition:transform .06s ease, filter .12s ease;
-}
-.toggleRow button:active{ transform:translateY(1px); filter:brightness(0.99); }
-.toggleRow button.active{ background:var(--main); color:#fff; }
+    .toggleRow{ display:flex; gap:8px; margin-top:0; }
+    .toggleRow button{
+      flex:1; border:var(--border); background:#fff; color:var(--main);
+      border-radius:14px; padding:var(--btnPadY) 0;
+      font-weight:900; font-size:13px; cursor:pointer;
+      transition:transform .06s ease, filter .12s ease;
+    }
+    .toggleRow button:active{ transform:translateY(1px); filter:brightness(0.99); }
+    .toggleRow button.active{ background:var(--main); color:#fff; }
 
-.sectionTitle{ margin-top:10px; font-size:13px; font-weight:900; letter-spacing:-0.2px; color:var(--main); }
+    .sectionTitle{ margin-top:10px; font-size:13px; font-weight:900; letter-spacing:-0.2px; color:var(--main); }
 
-.periodRow{ display:flex; gap:10px; margin-top:8px; }
-.periodRow input[type="date"]{
-  flex:1; width:100%; border:var(--border); border-radius:14px;
-  padding:var(--inputPadY) 12px; font-size:13px; font-weight:900; outline:none;
-  background:#fff; color:var(--text); min-width:0;
-  box-shadow:inset 0 1px 0 rgba(0,0,0,0.03);
-}
+    .periodRow{ display:flex; gap:10px; margin-top:8px; }
+    .periodRow input[type="date"]{
+      flex:1; width:100%; border:var(--border); border-radius:14px;
+      padding:var(--inputPadY) 12px; font-size:13px; font-weight:900; outline:none;
+      background:#fff; color:var(--text); min-width:0;
+      box-shadow:inset 0 1px 0 rgba(0,0,0,0.03);
+    }
 
-.presetRow{ display:flex; gap:8px; margin-top:8px; }
-.presetRow button{
-  flex:1; border:var(--border); background:#fff; color:var(--main);
-  border-radius:14px; padding:var(--btnPadY) 0;
-  font-weight:900; font-size:13px; cursor:pointer;
-  transition:transform .06s ease, filter .12s ease;
-}
-.presetRow button:active{ transform:translateY(1px); filter:brightness(0.99); }
-.presetRow button.active{ background:var(--main); color:#fff; }
+    .presetRow{ display:flex; gap:8px; margin-top:8px; }
+    .presetRow button{
+      flex:1; border:var(--border); background:#fff; color:var(--main);
+      border-radius:14px; padding:var(--btnPadY) 0;
+      font-weight:900; font-size:13px; cursor:pointer;
+      transition:transform .06s ease, filter .12s ease;
+    }
+    .presetRow button:active{ transform:translateY(1px); filter:brightness(0.99); }
+    .presetRow button.active{ background:var(--main); color:#fff; }
 
-.btnRow{ display:flex; gap:10px; margin-top:8px; }
-.applyBtn{
-  flex:1; border:var(--border); background:var(--main); color:#fff;
-  border-radius:14px; padding:var(--btnPadY2) 0;
-  font-weight:900; font-size:13px; cursor:pointer;
-  transition:transform .06s ease, filter .12s ease;
-}
-.applyBtn:active{ transform:translateY(1px); filter:brightness(0.99); }
+    .btnRow{ display:flex; gap:10px; margin-top:8px; }
+    .applyBtn{
+      flex:1; border:var(--border); background:var(--main); color:#fff;
+      border-radius:14px; padding:var(--btnPadY2) 0;
+      font-weight:900; font-size:13px; cursor:pointer;
+      transition:transform .06s ease, filter .12s ease;
+    }
+    .applyBtn:active{ transform:translateY(1px); filter:brightness(0.99); }
 
-.exportBtn{
-  width:120px; border:var(--border); background:#fff; color:var(--main);
-  border-radius:14px; padding:var(--btnPadY2) 0;
-  font-weight:900; font-size:13px; cursor:pointer; flex:0 0 120px;
-  transition:transform .06s ease, filter .12s ease;
-}
-.exportBtn:active{ transform:translateY(1px); filter:brightness(0.99); }
+    .exportBtn{
+      width:120px; border:var(--border); background:#fff; color:var(--main);
+      border-radius:14px; padding:var(--btnPadY2) 0;
+      font-weight:900; font-size:13px; cursor:pointer; flex:0 0 120px;
+      transition:transform .06s ease, filter .12s ease;
+    }
+    .exportBtn:active{ transform:translateY(1px); filter:brightness(0.99); }
 
-.chartCard{ margin-top:12px; border-color:rgba(44,111,127,0.75); }
-.meta{ display:flex; justify-content:space-between; align-items:flex-end; gap:10px; margin-bottom:8px; }
-.meta .left{ display:flex; flex-direction:column; gap:2px; min-width:0; }
-.meta .big{
-  font-size:16px; font-weight:900; letter-spacing:-0.4px; color:var(--main);
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-}
-.meta .small{ font-size:12px; color:var(--muted); }
+    .chartCard{ margin-top:12px; border-color:rgba(44,111,127,0.75); }
+    .meta{ display:flex; justify-content:space-between; align-items:flex-end; gap:10px; margin-bottom:8px; }
+    .meta .left{ display:flex; flex-direction:column; gap:2px; min-width:0; }
+    .meta .big{
+      font-size:16px; font-weight:900; letter-spacing:-0.4px; color:var(--main);
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .meta .small{ font-size:12px; color:var(--muted); }
 
-.chartWrap{
-  height:290px; position:relative;
-  border-radius:14px; overflow:hidden;
-  border:var(--softBorder);
-  box-shadow:var(--shadow);
-}
-canvas#lineChart{ width:100% !important; height:100% !important; display:block; }
+    .chartWrap{
+      height:290px; position:relative;
+      border-radius:14px; overflow:hidden;
+      border:var(--softBorder);
+      box-shadow:var(--shadow);
+    }
+    canvas#lineChart{ width:100% !important; height:100% !important; display:block; }
 
-.error{
-  color:#c0392b; font-size:12px; margin-top:10px; white-space:pre-wrap; display:none;
-  border:1px dashed rgba(192,57,43,0.35);
-  border-radius:12px; padding:10px 12px;
-}
+    .error{
+      color:#c0392b; font-size:12px; margin-top:10px; white-space:pre-wrap; display:none;
+      border:1px dashed rgba(192,57,43,0.35);
+      border-radius:12px; padding:10px 12px;
+    }
 
-.grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:12px; }
-.sq{
-  display:flex; flex-direction:column; justify-content:space-between;
-  padding:var(--cardPad);
-  min-height:120px;
-}
-.lbl{ font-size:13px; font-weight:900; color:var(--muted); letter-spacing:-0.2px; }
-.val{ font-size:28px; font-weight:900; letter-spacing:-0.8px; color:var(--main); }
+    .grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:12px; }
+    .sq{
+      display:flex; flex-direction:column; justify-content:space-between;
+      padding:var(--cardPad);
+      min-height:120px;
+      background:#fff;
+      border:var(--border);
+      border-radius:var(--radius);
+    }
+    .lbl{ font-size:13px; font-weight:900; color:var(--muted); letter-spacing:-0.2px; }
+    .val{ font-size:28px; font-weight:900; letter-spacing:-0.8px; color:var(--main); }
 
-/* Export doc */
-.exportDocWrap{
-  position:fixed; left:-99999px; top:0; width:860px;
-  background:#fff; padding:28px;
-  font-family:"Paperlogy",-apple-system,BlinkMacSystemFont,"Noto Sans KR",sans-serif;
-  color:#111;
-}
-.docHeader{ display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:14px; }
-.docTitle{ font-size:22px; font-weight:900; letter-spacing:-0.6px; color:var(--main); line-height:1.2; }
-.docMeta{ font-size:13px; color:#555; line-height:1.55; text-align:right; white-space:pre-line; }
-.docBox{ border:2px solid var(--main); border-radius:18px; padding:18px; }
-.docChartRow{ display:grid; grid-template-columns: 1.2fr 0.8fr; gap:14px; align-items:stretch; }
-.docChartCard{ border:2px solid var(--main); border-radius:16px; padding:14px; background:#fff; }
-.docChartWrap{ height:280px; position:relative; }
-#exportChart{ width:100% !important; height:100% !important; display:block; }
-.docCards{ display:grid; grid-template-columns:repeat(2, 1fr); gap:12px; }
-.docMini{ border:2px solid var(--main); border-radius:16px; padding:14px; background:#fff; display:flex; flex-direction:column; justify-content:space-between; min-height:132px; }
-.docMini .t{ font-size:13px; color:#666; font-weight:900; }
-.docMini .n{ font-size:34px; color:var(--main); font-weight:900; letter-spacing:-0.8px; }
-.docFooter{ margin-top:12px; font-size:12px; color:#777; line-height:1.45; }
+    /* Export doc */
+    .exportDocWrap{
+      position:fixed; left:-99999px; top:0; width:860px;
+      background:#fff; padding:28px;
+      font-family:"Paperlogy",-apple-system,BlinkMacSystemFont,"Noto Sans KR",sans-serif;
+      color:#111;
+    }
+    .docHeader{ display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:14px; }
+    .docTitle{ font-size:22px; font-weight:900; letter-spacing:-0.6px; color:var(--main); line-height:1.2; }
+    .docMeta{ font-size:13px; color:#555; line-height:1.55; text-align:right; white-space:pre-line; }
+    .docBox{ border:2px solid var(--main); border-radius:18px; padding:18px; }
+    .docChartRow{ display:grid; grid-template-columns: 1.2fr 0.8fr; gap:14px; align-items:stretch; }
+    .docChartCard{ border:2px solid var(--main); border-radius:16px; padding:14px; background:#fff; }
+    .docChartWrap{ height:280px; position:relative; }
+    #exportChart{ width:100% !important; height:100% !important; display:block; }
+    .docCards{ display:grid; grid-template-columns:repeat(2, 1fr); gap:12px; }
+    .docMini{
+      border:2px solid var(--main);
+      border-radius:16px;
+      padding:14px;
+      background:#fff;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      min-height:132px;
+    }
+    .docMini .t{ font-size:13px; color:#666; font-weight:900; }
+    .docMini .n{ font-size:34px; color:var(--main); font-weight:900; letter-spacing:-0.8px; }
+    .docFooter{ margin-top:12px; font-size:12px; color:#777; line-height:1.45; }
 
-@media (min-width: 900px){
-  .wrap{ max-width: 980px; }
-  .grid{ grid-template-columns:repeat(4,1fr); }
-  .sq{ min-height:110px; }
-  .chartWrap{ height: 360px; }
-}
-</style>
+    @media (min-width: 900px){
+      .wrap{ max-width: 980px; }
+      .grid{ grid-template-columns:repeat(4,1fr); }
+      .sq{ min-height:110px; }
+      .chartWrap{ height: 360px; }
+    }
+  </style>
 </head>
 
 <body>
@@ -185,7 +198,7 @@ canvas#lineChart{ width:100% !important; height:100% !important; display:block; 
       <div class="card chartCard">
         <div class="meta">
           <div class="left">
-            <div class="big" id="metaTitle">은하수한복</div>
+            <div class="big" id="metaTitle">은하수한복 · 일별</div>
             <div class="small" id="metaRange">-</div>
           </div>
           <div class="big" id="metaTotal">0</div>
@@ -199,19 +212,19 @@ canvas#lineChart{ width:100% !important; height:100% !important; display:block; 
       </div>
 
       <div class="grid">
-        <div class="card sq">
+        <div class="sq">
           <div class="lbl">네이버예약</div>
           <div class="val" id="cardReserve">0</div>
         </div>
-        <div class="card sq">
+        <div class="sq">
           <div class="lbl">전화문의</div>
           <div class="val" id="cardCall">0</div>
         </div>
-        <div class="card sq">
+        <div class="sq">
           <div class="lbl">카톡문의</div>
           <div class="val" id="cardKakao">0</div>
         </div>
-        <div class="card sq">
+        <div class="sq">
           <div class="lbl">더 알아보기</div>
           <div class="val" id="cardMore">0</div>
         </div>
@@ -249,17 +262,18 @@ canvas#lineChart{ width:100% !important; height:100% !important; display:block; 
         </div>
       </div>
 
-      <div class="docFooter" id="exportFoot">• reserve/call/kakao/more는 CTA 클릭 로그 기준입니다.</div>
+      <div class="docFooter" id="exportFoot">• reserve/call/kakao/more는 CTA 클릭 기준으로 집계됩니다.</div>
     </div>
   </div>
 
 <script>
-  /* ✅ 은하수 GAS URL (네가 준 값 반영) */
+  // ✅ 너가 준 은하수 GAS URL 반영
   const GAS_URL = "https://script.google.com/macros/s/AKfycbzxcZWKjh33hmFLLXFAyiMlMIXN0LfUDHUgmd_78_U9lqG1XXruTGcVfn8IEuwY4BieyQ/exec";
 
-  /* ✅ 랜딩에서 branch를 "은하수한복"으로 찍고 있으니, 리포트도 동일하게 고정 */
-  const BRANCH = "은하수한복";
+  // ✅ 은하수는 “단일 지점”처럼: 항상 이 값으로 리포트 요청
+  const FIXED_BRANCH = "은하수한복";
 
+  // ✅ 컬러 구분(파/빨/초)
   const COLORS = {
     reserve: { border: "#1F5EFF", fill: "rgba(31,94,255,0.22)" },
     call:    { border: "#E03131", fill: "rgba(224,49,49,0.22)" },
@@ -327,7 +341,7 @@ canvas#lineChart{ width:100% !important; height:100% !important; display:block; 
   function showError(msg){
     const b=$("errBox");
     b.style.display="block";
-    b.textContent=msg;
+    b.textContent=String(msg||"");
   }
   function hideError(){
     const b=$("errBox");
@@ -335,13 +349,13 @@ canvas#lineChart{ width:100% !important; height:100% !important; display:block; 
     b.textContent="";
   }
 
+  // ✅ 전역 에러 잡아서 lastUrl까지 보여주기 (line:0 대응)
   window.addEventListener("error", (e)=>{
     const msg = [
       "프론트 에러 감지",
       String(e?.message || e?.error?.message || "UNKNOWN_ERROR"),
-      e?.filename ? ("file: " + e.filename) : "",
-      (Number.isFinite(e?.lineno) ? ("line: " + e.lineno) : "")
-    ].filter(Boolean).join("\n");
+      state.lastUrl ? ("\nlastUrl:\n" + state.lastUrl) : ""
+    ].join("\n");
     showError(msg);
   });
   window.addEventListener("unhandledrejection", (e)=>{
@@ -349,8 +363,8 @@ canvas#lineChart{ width:100% !important; height:100% !important; display:block; 
     const msg = [
       "Promise 에러 감지",
       String(reason?.message || reason || "UNKNOWN_REJECTION"),
-      state.lastUrl ? ("lastUrl: " + state.lastUrl) : ""
-    ].filter(Boolean).join("\n");
+      state.lastUrl ? ("\nlastUrl:\n" + state.lastUrl) : ""
+    ].join("\n");
     showError(msg);
   });
 
@@ -363,7 +377,7 @@ canvas#lineChart{ width:100% !important; height:100% !important; display:block; 
     $("cardMore").textContent = fmt(c.more||0);
   }
 
-  /* ✅ 조회기간 전체 날짜/월을 생성하고 0 채우기 */
+  // ✅ 기간 전체(데이터 없어도) 라벨 생성 + 0 채우기
   function fillTrendToFullRange_(data, fromYmd, toYmd, group){
     const labelsIn = Array.isArray(data?.labels) ? data.labels : [];
     const s = data?.series || {};
@@ -412,7 +426,7 @@ canvas#lineChart{ width:100% !important; height:100% !important; display:block; 
     return { labels: labelsOut, series: outSeries };
   }
 
-  /* JSONP */
+  // ✅ JSONP 로더 (timeout + cachebuster)
   function loadJsonp(url){
     return new Promise((resolve,reject)=>{
       const cb="__eg_cb_"+Math.random().toString(16).slice(2);
@@ -457,10 +471,11 @@ canvas#lineChart{ width:100% !important; height:100% !important; display:block; 
     });
   }
 
-  async function fetchReport({branch, from, to, group}){
+  async function fetchReport(){
+    const {from,to}=getRangeSafe();
     const url = `${GAS_URL}?page=report`
-      + `&branch=${encodeURIComponent(branch)}`
-      + `&group=${encodeURIComponent(group)}`
+      + `&branch=${encodeURIComponent(FIXED_BRANCH)}`   // ✅ 핵심: 전체 말고 은하수로 고정
+      + `&group=${encodeURIComponent(state.group)}`     // ✅ day/month 전달
       + `&from=${encodeURIComponent(from)}`
       + `&to=${encodeURIComponent(to)}`;
     return await loadJsonp(url);
@@ -469,33 +484,9 @@ canvas#lineChart{ width:100% !important; height:100% !important; display:block; 
   let chart=null;
   function destroyChart(){ if(chart){ chart.destroy(); chart=null; } }
 
-  function baseOptions(){
-    return {
-      responsive:true,
-      maintainAspectRatio:false,
-      plugins:{
-        legend:{ display:true, labels:{ usePointStyle:true, boxWidth:10, boxHeight:10 } },
-        tooltip:{
-          callbacks:{
-            label:(c)=>{
-              const lbl = c.dataset.label ? (c.dataset.label + ": ") : "";
-              return " " + lbl + fmt(c.raw);
-            }
-          }
-        }
-      },
-      scales:{
-        x:{ type:"category", position:"bottom", ticks:{ color:"#8c8c8c", maxRotation:0, minRotation:0, autoSkip:true }, grid:{ color:"rgba(44,111,127,0.10)" } },
-        y:{ position:"left", beginAtZero:true, ticks:{ color:"rgba(44,111,127,1)" }, grid:{ color:"rgba(44,111,127,0.10)" } }
-      }
-    };
-  }
-
   function renderMultiLine(labels, series){
     const ctx=$("lineChart").getContext("2d");
     destroyChart();
-
-    const opt = baseOptions();
 
     chart = new Chart(ctx, {
       type:"line",
@@ -507,28 +498,24 @@ canvas#lineChart{ width:100% !important; height:100% !important; display:block; 
           { label:"카톡문의",   data: series?.kakao || [],   borderColor: COLORS.kakao.border,   backgroundColor: COLORS.kakao.fill,   tension: 0.35, pointRadius: (state.group==="month") ? 0 : 2, pointHoverRadius: (state.group==="month") ? 0 : 4 }
         ]
       },
-      options: opt
+      options:{
+        responsive:true,
+        maintainAspectRatio:false,
+        plugins:{ legend:{ display:true, labels:{ usePointStyle:true, boxWidth:10, boxHeight:10 } } },
+        scales:{
+          x:{ ticks:{ color:"#8c8c8c", maxRotation:0, minRotation:0, autoSkip:true }, grid:{ color:"rgba(44,111,127,0.10)" } },
+          y:{ beginAtZero:true, ticks:{ color:"#2c6f7f" }, grid:{ color:"rgba(44,111,127,0.10)" } }
+        }
+      }
     });
   }
 
-  /* Export */
   let exportChart=null;
   function destroyExportChart(){ if(exportChart){ exportChart.destroy(); exportChart=null; } }
 
   function renderExport(labels, series){
     const ctx=$("exportChart").getContext("2d");
     destroyExportChart();
-
-    const common = {
-      responsive:true,
-      maintainAspectRatio:false,
-      animation:false,
-      plugins:{ legend:{ display:true } },
-      scales:{
-        x:{ type:"category", position:"bottom", grid:{ color:"rgba(44,111,127,0.08)" } },
-        y:{ position:"left", beginAtZero:true, grid:{ color:"rgba(44,111,127,0.08)" } }
-      }
-    };
 
     exportChart = new Chart(ctx,{
       type:"line",
@@ -540,7 +527,12 @@ canvas#lineChart{ width:100% !important; height:100% !important; display:block; 
           { label:"카톡문의",   data: series?.kakao||[],   borderColor:COLORS.kakao.border,   backgroundColor:COLORS.kakao.fill,   tension:0.35, pointRadius:0 }
         ]
       },
-      options: common
+      options:{ responsive:true, maintainAspectRatio:false, animation:false, plugins:{ legend:{ display:true } },
+        scales:{
+          x:{ grid:{ color:"rgba(44,111,127,0.08)" } },
+          y:{ beginAtZero:true, grid:{ color:"rgba(44,111,127,0.08)" } }
+        }
+      }
     });
   }
 
@@ -565,8 +557,9 @@ canvas#lineChart{ width:100% !important; height:100% !important; display:block; 
       `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
 
     $("exportSub").textContent = `클릭 요약 (${gLabel})`;
+    $("exportChartLabel").textContent = `기간 내 추이 (${gLabel})`;
     $("exportMeta").textContent =
-      `브랜드: ${BRANCH}\n기준: ${gLabel}\n기간: ${from} ~ ${to}\n생성: ${generatedAt}`;
+      `브랜드: ${FIXED_BRANCH}\n기준: ${gLabel}\n기간: ${from} ~ ${to}\n생성: ${generatedAt}`;
 
     const cards=state.lastData.cards||{};
     $("exportTotal").textContent=fmt(cards.total||0);
@@ -592,33 +585,39 @@ canvas#lineChart{ width:100% !important; height:100% !important; display:block; 
     const {from,to}=getRangeSafe();
 
     try{
-      const dataRaw = await fetchReport({ branch: BRANCH, from, to, group: state.group });
+      const dataRaw = await fetchReport();
       if(!dataRaw || typeof dataRaw !== "object"){
         throw new Error("INVALID_REPORT_RESPONSE\n" + String(dataRaw));
       }
 
-      const data = dataRaw;
+      // ✅ 우리가 원하는 건 무조건 추이 모드
+      // 만약 GAS가 all_compare로 내려주면 = branch 파라미터가 잘못 들어간 것
+      if(dataRaw.mode && dataRaw.mode !== "branch_trend"){
+        throw new Error("MODE_MISMATCH\n"
+          + "현재 mode=" + String(dataRaw.mode) + "\n"
+          + "branch는 반드시 '" + FIXED_BRANCH + "' 로 요청되어야 합니다.\n"
+          + "lastUrl:\n" + state.lastUrl);
+      }
 
-      /* ✅ 은하수는 단일 브랜드 추이만 쓰므로, 날짜/월 0 채우기만 적용 */
-      const filled = fillTrendToFullRange_(data, from, to, state.group);
-      data.labels = filled.labels;
-      data.series = filled.series;
+      // ✅ 기간 전체 라벨 0 채우기
+      const filled = fillTrendToFullRange_(dataRaw, from, to, state.group);
+      dataRaw.labels = filled.labels;
+      dataRaw.series = filled.series;
 
-      state.lastData = data;
+      state.lastData = dataRaw;
 
       const gLabel=(state.group==="month")?"월별":"일별";
-      $("metaTitle").textContent = `은하수한복 · ${gLabel}`;
+      $("metaTitle").textContent = `${FIXED_BRANCH} · ${gLabel}`;
       $("metaRange").textContent = `${from} ~ ${to}`;
 
-      setCards(data.cards);
-      renderMultiLine(data.labels||[], data.series||{});
+      setCards(dataRaw.cards);
+      renderMultiLine(dataRaw.labels||[], dataRaw.series||{});
 
     }catch(err){
       state.lastData=null;
       const msg = [
         "리포트 로드 실패",
-        (err?.message || String(err)),
-        state.lastUrl ? ("\nlastUrl:\n" + state.lastUrl) : ""
+        (err?.message || String(err))
       ].join("\n");
       showError(msg);
       setCards({total:0,reserve:0,call:0,kakao:0,more:0});
