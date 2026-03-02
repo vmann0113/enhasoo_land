@@ -11,20 +11,32 @@ html, body { margin:0; padding:0; overflow-x:hidden; }
 
 .block img{ width:100%; display:block; }
 
+/* ✅ PC 겹침/경계 이상 완화:
+   - 고정 height는 유지하되 "섹션 이미지가 원본비율에서 과도하게 잘리며
+     경계가 어색해지는" 케이스를 줄이기 위해 min-height + auto 조합으로 완화
+   - 모바일은 기존 그대로(auto)
+*/
 .block.short{
-  height:985.1337px;
+  height:auto;               /* ✅ 기본은 auto로 */
   overflow:hidden;
 }
 .block.short img{
   width:100%;
-  height:100%;
-  object-fit:cover;
+  height:auto;               /* ✅ 기본은 auto로 */
+  object-fit:contain;        /* ✅ 기본은 contain으로 */
   display:block;
 }
 
-@media (max-width: 600px){
-  .block.short{ height:auto; }
-  .block.short img{ height:auto; object-fit:contain; }
+/* ✅ PC(600px 초과)에서만: 원래 한빔처럼 '짧은 섹션' 느낌 유지가 필요하면
+   max-height로만 제한 (겹침/잘림 위험 낮춤)
+*/
+@media (min-width: 601px){
+  .block.short img{
+    max-height: 985.1337px;  /* ✅ 기존 높이값을 "상한"으로만 사용 */
+    width:100%;
+    height:auto;
+    object-fit:contain;
+  }
 }
 
 /* 오버레이 섹션 */
@@ -78,8 +90,9 @@ html, body { margin:0; padding:0; overflow-x:hidden; }
   --hbActionIcon: 54px;
   --hbActionRadius: 18px;
 
-  --hbWine: #5a1f2b;
-  --hbWineHi: #6a2736;
+  /* ✅ 와인색 → 은하수 컬러로 교체 (팩트: 이 변수가 타이틀 배경을 결정함) */
+  --hbWine: #2c6f7f;
+  --hbWineHi: #2c6f7f; /* 그라데이션을 원하면 약간 밝은 톤으로 바꿔도 됨 */
 }
 
 .hb-fixed-cta{
@@ -243,16 +256,16 @@ html, body { margin:0; padding:0; overflow-x:hidden; }
   background: rgba(255,255,255,0.25);
 }
 .hb-item:last-child{ border-bottom:none; }
-.hb-item:active{ background: rgba(90,31,43,0.10); }
+.hb-item:active{ background: rgba(44,111,127,0.10); }
 
 .hb-badge{
   font-size: 11px;
   font-weight:900;
   padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(90,31,43,0.10);
-  border: 1px solid rgba(90,31,43,0.18);
+  background: rgba(44,111,127,0.10);
+  border: 1px solid rgba(44,111,127,0.18);
   white-space:nowrap;
-  color: rgba(90,31,43,0.92);
+  color: rgba(44,111,127,0.92);
   line-height: 1;
 }
