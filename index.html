@@ -118,24 +118,21 @@
 </div>
 
 <script>
-    
     function init() {
-        const grid = document.getElementById('branchGrid');
-        BRANCH_LIST.forEach(b => {
-            const a = document.createElement('a'); a.className = 'branch-link'; a.href = b.url; a.target = '_blank'; a.innerText = b.name; grid.appendChild(a);
-        });
-
-        // 네이버 지도: 은하수한복 (동구 범일로103번길 7)
+        // 네이버 지도: 은하수한복 (부산 범일동) 실좌표 반영
+        const pos = new naver.maps.LatLng(35.1384, 129.0601);
+        
         const map = new naver.maps.Map('naverMap', {
-            center: new naver.maps.LatLng(37.5074, 126.7371),
+            center: pos,
             zoom: 16
         });
+        
         new naver.maps.Marker({
-            position: new naver.maps.LatLng(37.5074, 126.7371),
-            map: map
+            position: pos,
+            map: map,
+            title: "은하수한복"
         });
     }
-
     window.onload = init;
 </script>
 </body>
