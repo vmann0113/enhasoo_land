@@ -1,234 +1,130 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko"> 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>은하수한복 예약상담</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no, address=no, email=no">
+    <title>은하수한복 공식 예약센터</title>
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=p92c8gq59k"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+    <style>
+        :root { 
+            --hb-navy: #0A1D37; --hb-gold: #B8977E; --hb-bg-gray: #eeeef1; 
+            --hb-line-blue: #1b4b9b; --pc-max-width: 1300px; --naver-green: #03C75A;
+            --kakao-yellow: #FEE500;
+        }
+        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        body { margin: 0; font-family: 'Pretendard', sans-serif; background-color: var(--hb-bg-gray); display: flex; flex-direction: column; align-items: center; }
 
-  <!-- ✅ 한빔에서 쓰던 style.css 그대로 사용(CTA 디자인 포함) -->
-  <link rel="stylesheet" href="style.css?v=20260302-EUNGASU-7" />
+        .main-wrapper { width: 100%; max-width: var(--pc-max-width); background-color: transparent; }
 
-  <!-- ✅ 여기서는 "디자인" 손대지 않고, 문제만 고치는 보정만 함 -->
-  <style>
-    :root{ --ctaH: 0px; }
+        /* 1. 이미지 섹션 */
+        .hero-feed img { width: 100%; height: auto; display: block; }
 
-    /* ✅ PC에서 섹션 이미지 겹침/틈 방지 (디자인 영향 최소) */
-    main.landing{
-      font-size:0;
-      line-height:0;
-    }
-    .block img{
-      display:block;
-      width:100%;
-      height:auto;
-      vertical-align:top;
-    }
+        /* 2. 주소 및 지도 (PC 2배 확대) */
+        .info-sec { padding: 80px 20px; text-align: center; }
+        .info-sec h2 { font-size: 3.5rem; color: var(--hb-navy); margin-bottom: 50px; font-weight: 800; letter-spacing: -2px; }
+        .map-card { background: #fff; padding: 25px; border-radius: 20px; max-width: 1100px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .map-card h3 { font-size: 2.2rem; margin-bottom: 20px; color: var(--hb-navy); }
+        #naverMap { width: 100%; height: 500px; border-radius: 12px; }
+        .addr-text { font-size: 1.6rem; color: #555; margin-top: 25px; font-weight: 600; line-height: 1.4; }
 
-    /* ✅ CTA가 푸터를 가리지 않게 하단 패딩 확보 */
-    body{
-      padding-bottom: var(--ctaH);
-    }
+        /* 3. 타이틀 바 */
+        .reservation-title-bar { width: 100%; background-color: var(--hb-line-blue); padding: 40px 20px; display: flex; align-items: center; justify-content: center; margin-top: 60px; overflow: hidden; }
+        .title-text { color: #ffffff; font-size: 3.2rem; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 20px; white-space: nowrap; letter-spacing: -1.5px; }
+        .naver-logo-img { height: 52px; width: auto; display: block; }
 
-    /* ✅ PC에서 CTA가 화면 왼쪽으로 튀는 현상 보정
-       - CTA 내부 디자인은 style.css가 그대로 담당
-       - 위치/폭만 "landing(520px)"과 동일하게 맞춤
-    */
-    .hb-fixed-cta{
-      left: 50% !important;
-      transform: translateX(-50%) !important;
-      width: 100% !important;
-      right: auto !important;
-    }
+        /* 4. 지점 버튼 그리드 */
+        .branch-grid-sec { padding: 80px 20px 150px; text-align: center; }
+        .branch-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; width: 100%; max-width: 1150px; margin: 0 auto; }
+        .branch-link { display: flex; align-items: center; justify-content: center; background: #fff; border: 3px solid var(--hb-line-blue); color: var(--hb-line-blue); text-decoration: none; height: 120px; border-radius: 15px; font-size: 2.6rem; font-weight: 900; }
 
-    /* landing도 520 기준이면 CTA와 정확히 일치 */
-    main.landing{
-      max-width:520px;
-      margin:0 auto;
-    }
-  </style>
+        /* 5. 푸터 (하이퍼링크 방지 처리) */
+        footer { padding: 120px 20px 220px; background: #222; color: #bbb; text-align: center; width: 100%; line-height: 2; pointer-events: auto; }
+        footer, footer span, footer div { color: #bbb !important; text-decoration: none !important; }
+        .hb-footerLogo { height: 150px; width: auto; margin-bottom: 40px; filter: brightness(0) invert(1); }
+        .biz-item { border-bottom: 1px solid #444; padding-bottom: 20px; margin-bottom: 20px; color: #bbb; }
+        .ft-strong { font-size: 1.4rem; font-weight: 700; color: #fff !important; display: block; margin-bottom: 5px; }
+
+        /* 6. 고정 CTA */
+        .fixed-cta { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: var(--pc-max-width); background: #fff; display: flex; padding: 15px; gap: 12px; box-shadow: 0 -5px 25px rgba(0,0,0,0.15); z-index: 1000; }
+        .cta-btn { flex: 1; height: 90px; display: flex; align-items: center; justify-content: center; border-radius: 12px; text-decoration: none; font-weight: 800; font-size: 1.8rem; border: none; cursor: pointer; }
+        .btn-call { background: var(--hb-navy); color: #fff; }
+        .btn-kakao { background: var(--kakao-yellow); color: #3C1E1E; }
+        .btn-reserve { background: var(--naver-green); color: #fff; }
+        .btn-home { background: var(--hb-gold); color: #fff; }
+
+        @media (max-width: 768px) {
+            .info-sec { padding: 30px 15px; }
+            .info-sec h2 { font-size: 1.8rem; margin-bottom: 30px; }
+            #naverMap { height: 320px; }
+            .addr-text { font-size: 1.1rem; min-height: auto; }
+            .reservation-title-bar { padding: 20px 10px; margin-top: 30px; }
+            .title-text { font-size: 4.8vw; gap: 2vw; } .naver-logo-img { height: 5vw; }
+            .branch-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .branch-link { height: 75px; font-size: 1.3rem; border-width: 2px; }
+            .cta-btn { height: 60px; font-size: 0.9rem; }
+            footer { padding: 60px 20px 140px; }
+            .hb-footerLogo { height: 80px; }
+            .ft-strong { font-size: 1.1rem; }
+        }
+    </style>
 </head>
-
 <body>
 
-<main class="landing">
+<div class="main-wrapper">
+    <section class="hero-feed">
+        <img src="/assets/01.webp"><img src="/assets/02.webp"><img src="/assets/03.webp">
+        <img src="/assets/04.webp"><img src="/assets/05.webp">
+    </section>
 
-  <section class="block">
-    <img src="assets/01_hero.webp" alt="히어로">
-  </section>
-
-  <section class="block short">
-    <img src="assets/02_store_intro.webp" alt="매장소개">
-  </section>
-
-  <section class="block short">
-    <img src="assets/03_accesary.webp" alt="악세사리">
-  </section>
-
-    <section class="block short">
-    <img src="assets/04_lookbook.webp" alt="룩북">
-  </section>
-
-  <section class="block short">
-    <img src="assets/04_review.webp" alt="리뷰">
-  </section>
+    <section class="info-sec">
+        <h2>은하수한복 위치안내</h2>
+        <div class="map-card">
+            <h3>은하수한복(범일동)</h3>
+            <div id="naverMap"></div>
+            <p class="addr-text">부산광역시 동구 범일로103번길 7, 4층</p>
+        </div>
+    </section>
 
 
-  <section class="block">
-    <img src="assets/05_footer.webp" alt="푸터">
-  </section>
+    <footer>
+        <img class="hb-footerLogo" src="/assets/footer_logo.png">
+        <div class="biz-item">
+            <span class="ft-strong">은하수 한복 스튜디오</span>
+            대표자: 김태현 | 등록번호: 109-46-91179 | TEL.010-4212-2407
+        </div>
+        <div style="color:#666; margin-top:20px;">ⓒ Eunhasu Hanbok</div>
+    </footer>
+</div>
 
-</main>
-
-<!-- Toast (style.css에 정의가 있으면 그대로 적용됨) -->
-<div id="toast" role="status" aria-live="polite"></div>
-
-<!-- =========================
-   ✅ CTA 마크업은 한빔 구조 유지 (디자인은 style.css가 담당)
-========================= -->
-<div class="hb-fixed-cta" id="hbFixedCta" aria-label="하단 고정 CTA">
-
-  <!-- 한빔은 버튼이었지만, 은하수는 지점선택이 없으니 "그대로 영역만" -->
-  <div class="hb-branchBtn" aria-label="은하수한복 상담 바로가기">
-    <span class="hb-branchTxt">은하수한복 상담 바로가기</span>
-  </div>
-
-  <div class="hb-actionPanel" aria-label="바로가기 버튼">
-    <a class="hb-action" id="hbBtnCall" href="#" aria-label="전화문의">
-      <span class="hb-ico" style="background-image:url('assets/btn-call.png');"></span>
-      <span class="hb-lbl">전화문의</span>
-    </a>
-
-    <a class="hb-action" id="hbBtnKakao" href="#" aria-label="카톡문의">
-      <span class="hb-ico" style="background-image:url('assets/btn-kakao.png');"></span>
-      <span class="hb-lbl">카톡문의</span>
-    </a>
-
-    <a class="hb-action" id="hbBtnReserve" href="#" aria-label="네이버예약">
-      <span class="hb-ico" style="background-image:url('assets/btn-reserve.png');"></span>
-      <span class="hb-lbl">네이버예약</span>
-    </a>
-
-    <a class="hb-action" id="hbBtnMore" href="#" aria-label="더 알아보기">
-      <span class="hb-ico" style="background-image:url('assets/btn-more.png');"></span>
-      <span class="hb-lbl">더 알아보기</span>
-    </a>
-  </div>
+<div class="fixed-cta">
+    <a href="tel:01042122407" class="cta-btn btn-call">전화상담</a>
+    <a href="https://open.kakao.com/o/sy1HOX1f" class="cta-btn btn-kakao">카톡문의</a>
+    <a href="https://m.booking.naver.com/booking/6/bizes/1027108" class="cta-btn btn-reserve">네이버예약</a>
+    <a href="https://www.instagram.com/eunhasuhanbok/" class="cta-btn btn-home">홈페이지</a>
 </div>
 
 <script>
-  /* =========================
-     CONFIG (은하수 전용)
-  ========================= */
-  const BRAND_NAME     = "은하수한복";
-  const GAS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzxcZWKjh33hmFLLXFAyiMlMIXN0LfUDHUgmd_78_U9lqG1XXruTGcVfn8IEuwY4BieyQ/exec";
+    
+    function init() {
+        const grid = document.getElementById('branchGrid');
+        BRANCH_LIST.forEach(b => {
+            const a = document.createElement('a'); a.className = 'branch-link'; a.href = b.url; a.target = '_blank'; a.innerText = b.name; grid.appendChild(a);
+        });
 
-  const FIXED_PHONE   = "01042122407";
-  const FIXED_KAKAO   = "https://open.kakao.com/o/sy1HOX1f";
-  const FIXED_RESERVE = "https://m.booking.naver.com/booking/6/bizes/1027108";
-  const FIXED_MORE    = "https://www.instagram.com/eunhasuhanbok/";
-
-  /* =========================
-     Toast (null-safe)
-  ========================= */
-  const toastEl = document.getElementById('toast');
-  let toastTimer = null;
-  function showToast(msg){
-    if(!toastEl){ alert(msg); return; }
-    toastEl.textContent = String(msg || "");
-    toastEl.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(()=>toastEl.classList.remove('show'), 2200);
-  }
-
-  /* =========================
-     Session + Logger
-  ========================= */
-  function getSessionId(){
-    const k="EUNGASU_SID";
-    let v = localStorage.getItem(k);
-    if(!v){
-      const c = (typeof window !== "undefined") ? window.crypto : null;
-      v = (c && typeof c.randomUUID === "function")
-        ? c.randomUUID()
-        : (Date.now()+"_"+Math.random().toString(16).slice(2));
-      localStorage.setItem(k,v);
+        // 네이버 지도: 은하수한복 (동구 범일로103번길 7)
+        const map = new naver.maps.Map('naverMap', {
+            center: new naver.maps.LatLng(37.5074, 126.7371),
+            zoom: 16
+        });
+        new naver.maps.Marker({
+            position: new naver.maps.LatLng(37.5074, 126.7371),
+            map: map
+        });
     }
-    return v;
-  }
 
-  function sendClickEvent({ action, source } = {}){
-    const payloadObj = {
-      type: "click",
-      action: String(action || "").trim(),
-      branch: BRAND_NAME, // ✅ 은하수는 단일 지점처럼 처리
-      source: String(source || "cta").trim(),
-      sessionId: getSessionId(),
-      page: location.pathname || "/",
-      referrer: document.referrer || "",
-      ua: navigator.userAgent || "",
-      ts: Date.now()
-    };
-
-    const payload = JSON.stringify(payloadObj);
-
-    try{
-      if(navigator.sendBeacon){
-        navigator.sendBeacon(GAS_WEBAPP_URL, payload);
-        return;
-      }
-    }catch(e){}
-
-    try{
-      fetch(GAS_WEBAPP_URL, { method:"POST", body: payload, keepalive:true }).catch(()=>{});
-    }catch(e){}
-  }
-
-  /* =========================
-     CTA 이벤트
-  ========================= */
-  const btnCall = document.getElementById("hbBtnCall");
-  const btnKakao = document.getElementById("hbBtnKakao");
-  const btnReserve = document.getElementById("hbBtnReserve");
-  const btnMore = document.getElementById("hbBtnMore");
-
-  if(btnCall) btnCall.addEventListener("click", (e)=>{
-    e.preventDefault();
-    sendClickEvent({ action:"call", source:"cta" });
-    window.location.href = "tel:" + FIXED_PHONE;
-  });
-
-  if(btnKakao) btnKakao.addEventListener("click", (e)=>{
-    e.preventDefault();
-    sendClickEvent({ action:"kakao", source:"cta" });
-    window.open(FIXED_KAKAO, "_blank", "noopener,noreferrer");
-  });
-
-  if(btnReserve) btnReserve.addEventListener("click", (e)=>{
-    e.preventDefault();
-    sendClickEvent({ action:"reserve", source:"cta" });
-    window.open(FIXED_RESERVE, "_blank", "noopener,noreferrer");
-  });
-
-  if(btnMore) btnMore.addEventListener("click", (e)=>{
-    e.preventDefault();
-    sendClickEvent({ action:"more", source:"cta" });
-    window.open(FIXED_MORE, "_blank", "noopener,noreferrer");
-  });
-
-  /* ✅ CTA 높이 변수(푸터 가림 방지) */
-  function setHbCtaHeightVar(){
-    const cta = document.getElementById("hbFixedCta");
-    const h = cta ? Math.round(cta.getBoundingClientRect().height) : 0;
-    document.documentElement.style.setProperty('--ctaH', h + 'px');
-  }
-  window.addEventListener('resize', setHbCtaHeightVar);
-  window.addEventListener('orientationchange', ()=> setTimeout(setHbCtaHeightVar, 250));
-  window.addEventListener('load', ()=> setTimeout(setHbCtaHeightVar, 50));
-  setHbCtaHeightVar();
+    window.onload = init;
 </script>
-
 </body>
 </html>
-
-
-
